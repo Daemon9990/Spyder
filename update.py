@@ -1,9 +1,9 @@
 from logging import FileHandler, StreamHandler, INFO, basicConfig, error as log_error, info as log_info
 from os import path as ospath, environ, remove
 from subprocess import run as srun, call as scall
-from pkg_resources import working_set
-from requests import get as rget
+
 from dotenv import load_dotenv, dotenv_values
+from pkg_resources import working_set
 from pymongo import MongoClient
 
 if ospath.exists('log.txt'):
@@ -52,18 +52,18 @@ if DATABASE_URL is not None:
         environ['UPGRADE_PACKAGES'] = config_dict.get('UPDATE_PACKAGES', 'False')
     conn.close()
 
-UPGRADE_PACKAGES = environ.get('UPGRADE_PACKAGES', 'False') 
+UPGRADE_PACKAGES = environ.get('UPGRADE_PACKAGES', 'False')
 if UPGRADE_PACKAGES.lower() == 'true':
     packages = [dist.project_name for dist in working_set]
     scall("pip install " + ' '.join(packages), shell=True)
 
-UPSTREAM_REPO = environ.get('UPSTREAM_REPO', 'https://gitlab.com/mysterysd.sd/WZML-X')
+UPSTREAM_REPO = environ.get('UPSTREAM_REPO', '')
 if len(UPSTREAM_REPO) == 0:
     UPSTREAM_REPO = None
 
 UPSTREAM_BRANCH = environ.get('UPSTREAM_BRANCH', '')
 if len(UPSTREAM_BRANCH) == 0:
-    UPSTREAM_BRANCH = 'master'
+    UPSTREAM_BRANCH = 'hk_wzmlx'
 
 if UPSTREAM_REPO is not None:
     if ospath.exists('.git'):
